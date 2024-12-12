@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<link href="styles.css" rel="stylesheet">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ruleta Navideña - Pereira</title>
+  <style>
+    :root {
+      --primary-color: #1a1a1a; /* Fondo principal oscuro */
+      --secondary-color: #d32f2f; /* Color principal de adornos */
+      --accent-color: #ffeb3b; /* Amarillo navideño */
+      --text-color: #ffffff; /* Texto blanco */
+      --border-color: #333333; /* Bordes */
+      --light-on: #ff3d00; /* Luces encendidas */
+      --light-off: #757575; /* Luces apagadas */
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--primary-color);
+      color: var(--text-color);
+      text-align: center;
+      overflow: hidden;
+
+      background-image: url('images/niuevepe.jpg'); /* Cambia esta URL */
+  background-size: cover; /* Asegura que la imagen cubra toda la pantalla */
+  background-position: center; /* Centrado */
+  background-attachment: fixed; /* La imagen no se moverá al hacer scroll */
+  background-repeat: no-repeat;
+    }
+
+    nav {
+      background-color: var(--secondary-color);
+      padding: 10px;
+      font-size: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav .saldo {
+      font-weight: bold;
+    }
+
+    h1 {
+      margin: 20px 0;
+    }
+
+    .ruleta-container {
+      position: relative;
+      margin-top: 50px;
+    }
+
+    .ruleta {
+      width: 300px;
+      height: 300px;
+      border: 10px solid var(--secondary-color);
+      border-radius: 50%;
+      position: relative;
+      margin: 0 auto;
+      background: linear-gradient(45deg, #d32f2f, #ff5722); /* Fondo navideño */
+      overflow: hidden;
+    }
+
+    .sector {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      clip-path: polygon(50% 50%, 100% 0%, 100% 100%);
+      font-size: 20px; /* Tamaño más grande para los premios */
+      font-weight: bold;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--text-color);
+      transform-origin: 50% 50%;
+    }
+
+    /* Color de sectores */
+    .sector:nth-child(1) {
+      background: #ff5252;
+      transform: rotate(0deg);
+    }
+
+    .sector:nth-child(2) {
+      background: #ffc107;
+      transform: rotate(72deg);
+    }
+
+    .sector:nth-child(3) {
+      background: #8bc34a;
+      transform: rotate(144deg);
+    }
+
+    .sector:nth-child(4) {
+      background: #03a9f4;
+      transform: rotate(216deg);
+    }
+
+    .sector:nth-child(5) {
+      background: #e91e63;
+      transform: rotate(288deg);
+    }
+
+    .flecha {
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 40px;
+      background: var(--accent-color);
+      clip-path: polygon(50% 100%, 100% 0%, 0% 0%);
+      z-index: 10;
+    }
+
+    .luces-navideñas {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .luces-navideñas span {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--light-off); /* Inicialmente apagadas */
+    }
+
+    .luces-navideñas span.encendida {
+      background: var(--light-on);
+      box-shadow: 0 0 8px var(--light-on);
+    }
+
+    .boton-girar {
+      margin-top: 30px;
+      padding: 10px 20px;
+      background: var(--secondary-color);
+      color: var(--text-color);
+      border: none;
+      border-radius: 5px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .boton-girar:hover {
+      background: var(--accent-color);
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <!-- Menú de navegación -->
+  <ul class="nav-menu" id="nav-menu">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="apuestas-deportivas.html">Apuestas Deportivas</a></li>
+    <li><a href="esports.html">E-Sports</a></li>
+    <li><a href="juegos_clasicos.html">Juegos Clásicos</a></li>
+    <li><a href="ruleta_navidad.html">Ruleta</a></li>
+  </ul>
+
+  <!-- Sección de saldo -->
+  <div>Saldo: <span id="saldo">10000</span> soles</div>
+</nav>
+
+  <h1>🎁 ¡Prueba Suerte en la Ruleta Navideña! 🎄</h1>
+
+  <div class="ruleta-container">
+    <div class="ruleta" id="ruleta">
+      <div class="sector">Perdiste</div>
+      <div class="sector">Ganaste +4k</div>
+      <div class="sector">Gira otra vez</div>
+      <div class="sector">Te ganaste un coche</div>
+      <div class="sector">Suerte la próxima</div>
+    </div>
+    <div class="flecha"></div>
+    <div class="luces-navideñas">
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+
+  <button class="boton-girar" id="botonGirar">¡Girar la Ruleta!</button>
+
+  <script>
+    const ruleta = document.getElementById('ruleta');
+    const botonGirar = document.getElementById('botonGirar');
+    const saldoElement = document.getElementById('saldo');
+    const luces = document.querySelectorAll('.luces-navideñas span');
+
+    let saldo = 10000;
+    let enProceso = false;
+
+    function encenderLuces() {
+      luces.forEach((luz, index) => {
+        setTimeout(() => {
+          luz.classList.toggle('encendida');
+        }, index * 200);
+      });
+    }
+
+    function girarRuleta() {
+      if (enProceso) return; // Evitar giros múltiples
+      if (saldo < 250) {
+        alert('No tienes suficiente saldo.');
+        return;
+      }
+
+      saldo -= 250;
+      saldoElement.textContent = saldo;
+
+      enProceso = true;
+
+      const vueltasIniciales = 1800; // Al menos 5 vueltas completas
+      const gradosFinal = Math.floor(Math.random() * 360); // Resultado final
+      const gradosTotales = vueltasIniciales + gradosFinal;
+
+      ruleta.style.transition = 'transform 3s cubic-bezier(0.25, 0.1, 0.25, 1)';
+      ruleta.style.transform = `rotate(${gradosTotales}deg)`;
+
+      setTimeout(() => {
+        ruleta.style.transition = 'none';
+        ruleta.style.transform = `rotate(${gradosFinal}deg)`;
+        determinarResultado(gradosFinal);
+        enProceso = false;
+      }, 3000);
+
+      encenderLuces();
+    }
+
+    function determinarResultado(grados) {
+      let resultado;
+      if (grados >= 0 && grados < 72) resultado = 'Perdiste';
+      else if (grados >= 72 && grados < 144) resultado = 'Ganaste +4k';
+      else if (grados >= 144 && grados < 216) resultado = 'Gira otra vez';
+      else if (grados >= 216 && grados < 288) resultado = 'Te ganaste un coche';
+      else resultado = 'Suerte la próxima';
+
+      switch (resultado) {
+        case 'Ganaste +4k':
+          saldo += 4000;
+          saldoElement.textContent = saldo;
+          alert('¡Felicidades! Ganaste +4k soles.');
+          break;
+        case 'Gira otra vez':
+          alert('¡Gira otra vez! Este giro es gratuito.');
+          break;
+        case 'Te ganaste un coche':
+          alert('🎉 ¡Felicidades! ¡Te ganaste una Lamborghini Urus! 🎁');
+          break;
+        default:
+          alert(resultado);
+      }
+    }
+
+    botonGirar.addEventListener('click', girarRuleta);
+  </script>
+</body>
+</html>

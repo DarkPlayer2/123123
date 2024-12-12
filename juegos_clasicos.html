@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<link href="styles.css" rel="stylesheet">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tres en Línea - Pereira</title>
+  <style>
+    :root {
+      --primary-color: #282c34;
+      --secondary-color: #1e2127;
+      --accent-color: #007BFF;
+      --text-color: #ffffff;
+      --border-color: #333333;
+      --win-text-color: #28a745;
+      --lose-text-color: #dc3545;
+    }
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+
+  /* Imagen de fondo */
+  background-image: url('images/pokerugu.jpg'); /* Cambia esta URL */
+  background-size: cover; /* Asegura que la imagen cubra toda la pantalla */
+  background-position: center; /* Centrado */
+  background-attachment: fixed; /* La imagen no se moverá al hacer scroll */
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
+}
+
+    nav {
+      background-color: var(--secondary-color);
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    nav a {
+      color: var(--text-color);
+      margin-right: 15px;
+      text-decoration: none;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .saldo-container {
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    .game-container {
+      max-width: 400px;
+      margin: auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .cell {
+      width: 100px;
+      height: 100px;
+      background-color: var(--secondary-color);
+      color: var(--text-color);
+      font-size: 2em;
+      text-align: center;
+      line-height: 100px;
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+    }
+
+    .cell.taken {
+      cursor: not-allowed;
+    }
+
+    .bet-container {
+      text-align: center;
+      margin: 20px;
+    }
+
+    .winner-message {
+      text-align: center;
+      font-size: 1.3em;
+      margin-top: 20px;
+      padding: 10px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px;
+      background-color: var(--secondary-color);
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <!-- Menú de navegación -->
+  <ul class="nav-menu" id="nav-menu">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="apuestas-deportivas.html">Apuestas Deportivas</a></li>
+    <li><a href="esports.html">E-Sports</a></li>
+    <li><a href="juegos_clasicos.html">Juegos Clásicos</a></li>
+    <li><a href="ruleta_navidad.html">Ruleta</a></li>
+  </ul>
+
+  <!-- Sección de saldo -->
+  <div>Saldo: <span id="saldo">10000</span> soles</div>
+</nav>
+
+  <h1>Juegos Clásicos - Tres en Línea</h1>
+
+  <div class="bet-container">
+    <label for="montoApuesta">Monto de apuesta: </label>
+    <input type="number" id="montoApuesta" placeholder="Monto" />
+    <button id="btnIniciarJuego">Iniciar Juego</button>
+  </div>
+
+  <div class="game-container" id="game-board">
+    <!-- El tablero se generará dinámicamente -->
+  </div>
+
+  <div class="winner-message" id="winner-message"></div>
+
+
+  <script>
+    let saldo = 10000;
+    let jugadorActual = "X"; // "X" o "O"
+    let juegoEnCurso = false;
+    let montoApuesta = 0;
+
+    // Seleccionar los elementos DOM
+    const saldoElement = document.getElementById("saldo");
+    const gameBoard = document.getElementById("game-board");
+    const mensajeGanador = document.getElementById("winner-message");
+    const montoApuestaInput = document.getElementById("montoApuesta");
+    const botonIniciarJuego = document.getElementById("btnIniciarJuego");
+
+    // Inicializar tablero vacío
+    let tablero = ["", "", "", "", "", "", "", "", ""]; // 3x3 vacíos
+
+    function crearTablero() {
+      tablero = ["", "", "", "", "", "", "", "", ""];
+      gameBoard.innerHTML = ""; // Limpiar tablero
+
+      tablero.forEach((_, index) => {
+        const celda = document.createElement("div");
+        celda.classList.add("cell");
+        celda.addEventListener("click", () => realizarMovimiento(index));
+        gameBoard.appendChild(celda);
+      });
+
+      jugadorActual = "X";
+      mensajeGanador.textContent = "";
+      juegoEnCurso = true;
+    }
+
+    function realizarMovimiento(index) {
+      if (!juegoEnCurso || tablero[index] !== "") return; // Celda ocupada o juego finalizado
+
+      tablero[index] = jugadorActual;
+      const celdas = document.querySelectorAll(".cell");
+      celdas[index].textContent = jugadorActual;
+      celdas[index].classList.add("taken");
+
+      if (verificarGanador(jugadorActual)) {
+        finalizarJuego(`${jugadorActual} ha ganado`);
+        return;
+      }
+
+      if (tablero.every(celda => celda !== "")) {
+        finalizarJuego("Empate");
+        return;
+      }
+
+      jugadorActual = jugadorActual === "X" ? "O" : "X"; // Cambiar turno
+    }
+
+    function verificarGanador(jugador) {
+      const combinacionesGanadoras = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+      ];
+
+      return combinacionesGanadoras.some(combinacion =>
+        combinacion.every(index => tablero[index] === jugador)
+      );
+    }
+
+    function finalizarJuego(mensaje) {
+      juegoEnCurso = false;
+      mensajeGanador.textContent = mensaje;
+
+      if (mensaje.includes("ha ganado")) {
+        saldo += montoApuesta * 2;
+        mensajeGanador.style.color = "var(--win-text-color)";
+      } else if (mensaje === "Empate") {
+        saldo += montoApuesta; // Devolver apuesta en caso de empate
+      } else {
+        mensajeGanador.style.color = "var(--lose-text-color)";
+      }
+
+      saldoElement.textContent = saldo;
+      setTimeout(() => crearTablero(), 3000); // Reiniciar tablero después de 3s
+    }
+
+    botonIniciarJuego.addEventListener("click", () => {
+      montoApuesta = parseFloat(montoApuestaInput.value);
+
+      if (isNaN(montoApuesta) || montoApuesta <= 0 || montoApuesta > saldo) {
+        alert("Por favor, ingrese un monto válido para apostar.");
+        return;
+      }
+
+      saldo -= montoApuesta;
+      saldoElement.textContent = saldo;
+      crearTablero();
+    });
+
+    // Inicializar el juego al cargar la página
+    window.onload = () => {
+      crearTablero();
+    };
+
+  </script>
+
+</body>
+</html>

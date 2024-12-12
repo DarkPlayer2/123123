@@ -1,0 +1,46 @@
+/* Estilos generales para el cuerpo */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Estilo del contenedor <nav> */
+nav {
+  display: flex;
+  justify-content: space-between; /* Espaciado entre menú y saldo */
+  align-items: center; /* Centrar verticalmente elementos */
+  background-color: #333; /* Fondo del menú */
+  padding: 10px 20px; /* Espaciado interior */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo de la lista del menú */
+.nav-menu {
+  list-style-type: none; /* Quitar los puntos de lista */
+  display: flex; /* Hacer el menú horizontal */
+  gap: 15px; /* Espaciado entre elementos del menú */
+  padding: 0;
+  margin: 0;
+}
+
+/* Enlaces en el menú */
+.nav-menu a {
+  text-decoration: none; /* Quitar el subrayado */
+  color: white; /* Color blanco para los enlaces */
+  font-size: 16px; /* Tamaño del texto */
+  padding: 8px 12px; /* Espaciado interno */
+  border-radius: 5px; /* Bordes redondeados */
+  transition: background-color 0.3s, color 0.3s; /* Transición suave */
+}
+
+/* Efecto al pasar el ratón sobre los enlaces */
+.nav-menu a:hover {
+  background-color: #007BFF; /* Fondo azul en hover */
+  color: white; /* Texto blanco en hover */
+}
+
+/* Estilo de la sección de saldo */
+div {
+  font-size: 16px;
+  color: white; /* Color blanco del texto */
+}

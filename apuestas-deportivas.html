@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<link href="styles.css" rel="stylesheet">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apuestas Deportivas - Pereira</title>
+  <style>
+    /* Estilos */
+    :root {
+      --primary-color: #ffffff;
+      --secondary-color: #1a1a1a;
+      --accent-color: #007BFF;
+      --text-color: #ffffff;
+      --border-color: #333333;
+      --success-color: #28a745;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--primary-color);
+
+      /* Imagen de fondo */
+      background-image: url('images/fut_ori.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--secondary-color);
+      padding: 10px 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    nav a {
+      color: var(--text-color);
+      margin-right: 15px;
+      text-decoration: none;
+      font-size: 16px;
+      padding: 8px 12px;
+      border-radius: 5px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    nav a:hover {
+      background-color: var(--accent-color);
+      color: var(--text-color);
+    }
+
+    nav div {
+      font-size: 16px;
+      color: var(--text-color);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      margin: 20px 0;
+    }
+
+    .countdown {
+      text-align: center;
+      font-size: 1.2rem;
+      margin: 20px;
+      padding: 10px;
+      background: var(--secondary-color);
+      border-radius: 8px;
+      color: var(--text-color);
+    }
+
+    .bet-container {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--secondary-color);
+      color: var(--text-color);
+    }
+
+    .bet-item {
+      border-bottom: 1px solid var(--border-color);
+      padding: 20px 0;
+    }
+
+    .bet-teams {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+
+    .bet-options {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 10px;
+    }
+
+    .bet-options button {
+      background: var(--accent-color);
+      color: var(--text-color);
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .bet-options input {
+      width: 60px;
+      border: 1px solid var(--border-color);
+      background: var(--secondary-color);
+      color: var(--text-color);
+    }
+
+    .winner-message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--secondary-color);
+      padding: 20px;
+      border-radius: 10px;
+      display: none;
+      text-align: center;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px;
+      background: var(--secondary-color);
+      color: var(--text-color);
+    }
+
+    /* Ajustes Responsivos */
+
+    /* Para tablets y pantallas medianas (<= 768px) */
+    @media (max-width: 768px) {
+      nav {
+        flex-wrap: wrap;
+      }
+
+      nav a {
+        font-size: 0.85rem;
+        margin-top: 5px;
+      }
+
+      .bet-container {
+        padding: 15px;
+      }
+
+      .bet-options {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .bet-teams {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+        font-size: 1.1rem;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .winner-message {
+        width: 90%;
+        font-size: 0.9rem;
+      }
+
+      footer {
+        font-size: 0.8rem;
+      }
+    }
+
+    /* Para dispositivos móviles (<= 480px) */
+    @media (max-width: 480px) {
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      nav div {
+        font-size: 0.75rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .countdown {
+        font-size: 1rem;
+        padding: 10px;
+      }
+
+      .bet-container {
+        padding: 10px;
+      }
+
+      .bet-options {
+        justify-content: center;
+        gap: 5px;
+      }
+
+      .bet-options button {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+      }
+
+      .bet-options input {
+        width: 50px;
+        font-size: 0.85rem;
+      }
+
+      .winner-message {
+        font-size: 0.8rem;
+      }
+
+      footer {
+        font-size: 0.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Menú de navegación -->
+  <nav>
+    <ul class="nav-menu" id="nav-menu">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="apuestas-deportivas.html">Apuestas Deportivas</a></li>
+      <li><a href="esports.html">E-Sports</a></li>
+      <li><a href="juegos_clasicos.html">Juegos Clásicos</a></li>
+      <li><a href="ruleta_navidad.html">Ruleta</a></li>
+    </ul>
+
+    <!-- Saldo -->
+    <div>Saldo: <span id="saldo">10000</span> soles</div>
+  </nav>
+
+  <!-- Título -->
+  <h1>Apuestas Profesionales Deportivas</h1>
+  <div class="countdown" id="countdown">Tiempo restante: 60s</div>
+
+  <!-- Contenedor principal -->
+  <div class="bet-container" id="bet-container">
+    <div class="bet-item">
+      <div class="bet-teams" id="team1">Barcelona vs. Real Madrid</div>
+      <div class="bet-options">
+        <button onclick="apostar(0, 'Barcelona', 1.85)">Barcelona (1.85)</button>
+        <button onclick="apostar(0, 'Real Madrid', 2.10)">Real Madrid (2.10)</button>
+        <button onclick="apostar(0, 'Empate', 3.5)">Empate (3.5)</button>
+        <input type="number" id="monto0" placeholder="Monto">
+      </div>
+    </div>
+
+    <div class="bet-item">
+      <div class="bet-teams" id="team2">PSG vs. Manchester City</div>
+      <div class="bet-options">
+        <button onclick="apostar(1, 'PSG', 1.95)">PSG (1.95)</button>
+        <button onclick="apostar(1, 'Manchester City', 2.25)">Manchester City (2.25)</button>
+        <button onclick="apostar(1, 'Empate', 3.25)">Empate (3.25)</button>
+        <input type="number" id="monto1" placeholder="Monto">
+      </div>
+    </div>
+  </div>
+
+  <!-- Mensaje de ganadores -->
+  <div class="winner-message" id="winner-message">
+    <h2>Ganadores</h2>
+    <p id="winner-text"></p>
+  </div>
+
+
+  <script>
+    // Tu lógica de JS permanece tal cual
+  </script>
+</body>
+</html>
